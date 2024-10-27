@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Зашифровані нотатки</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #00c6ff, #ff6ec4);
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: white;
+    }
+    .container {
+      text-align: center;
+    }
+    .btn, .input-field, .textarea {
+      padding: 10px;
+      margin: 10px;
+      border: none;
+      border-radius: 5px;
+    }
+    .btn {
+      cursor: pointer;
+      background-color: #333;
+      color: white;
+    }
+    .note-list, .note-input {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Зашифровані нотатки</h1>
+    <button class="btn" onclick="showPasswordPrompt()">Натиснути для перегляду всіх нотаток</button>
+    <div class="note-list" id="noteList"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
