@@ -9,6 +9,7 @@ const port = 3000;
 // Налаштування паролів (замініть на власні)
 const VIEW_PASSWORD_HASH = bcrypt.hashSync('view', 10);
 const EDIT_PASSWORD_HASH = bcrypt.hashSync('edit', 10);
+consolr.log("sdlfksldf");
 
 app.use(cors());
 app.use(bodyParser.json());
