@@ -10,29 +10,21 @@ function showPasswordPrompt() {
     if (data.message) {
       alert(data.message);
     } else {
-      displayNotes(data);
+      displayNotes(data, password);
       showAddNoteOption(password);
     }
   })
   .catch(error => console.error('Error:', error));
 }
 
-function displayNotes(notes) {
+function displayNotes(notes, viewPassword) {
   const noteList = document.getElementById('noteList');
   noteList.innerHTML = notes.map(note => `
     <div>
       <p>${note.text}</p>
       <button class="btn" onclick="editNotePrompt('${note._id}')">Редагувати</button>
-    </div>
-  `).join('');
-}
-
-function deleteNotes(notes) {
-  const noteList = document.getElementById('noteList');
-  noteList.innerHTML = notes.map(note => `
-    <div>
-      <p>${note.text}</p>
-      <button class="btn" onclick="editNotePrompt('${note._id}')">delete</button>
+      <button class="btn" onclick="deleteNotePrompt('${note._id}', '${viewPassword}')">Видалити</button>
+      <button class="btn" onclick="shareNotePrompt('${note._id}')">Поділитися</button>
     </div>
   `).join('');
 }
@@ -75,6 +67,39 @@ function editNotePrompt(noteId) {
   .then(data => {
     alert(data.message);
     showPasswordPrompt();
+  })
+  .catch(error => console.error('Error:', error));
+}
+
+function deleteNotePrompt(noteId, password) {
+  if (confirm("Ви впевнені, що хочете видалити цю нотатку?")) {
+    fetch('/notes/delete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password, noteId })
+    })
+    .then(response => response.json())
+    .then(data => {
+      alert(data.message);
+      showPasswordPrompt();
+    })
+    .catch(error => console.error('Error:', error));
+  }
+}
+
+function shareNotePrompt(noteId) {
+  const newPassword = prompt("Встановіть пароль для перегляду цієї нотатки:");
+  
+  fetch('/notes/set-view-password', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ noteId, newPassword })
+  })
+  .then(response => response.json())
+  .then(data => {
+    alert(data.message);
+    const shareUrl = `${window.location.origin}/notes/share/${noteId}`;
+    prompt("Скопіюйте посилання для поділу:", shareUrl);
   })
   .catch(error => console.error('Error:', error));
 }
