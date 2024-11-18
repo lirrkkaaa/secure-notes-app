@@ -9,17 +9,18 @@
       background: linear-gradient(to right, #00c6ff, #ff6ec4);
       font-family: Arial, sans-serif;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
-      height: 100vh;
+      padding: 20px;
       color: white;
     }
     .container {
-      text-align: center;
+      width: 90%;
+      max-width: 600px;
     }
     .btn, .input-field, .textarea {
       padding: 10px;
-      margin: 10px;
+      margin: 5px;
       border: none;
       border-radius: 5px;
     }
@@ -28,15 +29,38 @@
       background-color: #333;
       color: white;
     }
-    .note-list, .note-input {
-      margin-top: 20px;
+    .note-container {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 10px;
+      margin: 10px 0;
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    .note-actions {
+      margin-top: 10px;
+    }
+    .input-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .input-field, .textarea {
+      flex: 1;
+      height: 38px; /* Робимо однакову висоту */
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Зашифровані нотатки</h1>
-    <button class="btn" onclick="showPasswordPrompt()">Натиснути для перегляду всіх нотаток</button>
+    <div class="note-input">
+      <div class="input-row">
+        <textarea class="textarea" id="newNoteText" placeholder="Введіть текст нотатки"></textarea>
+        <input type="password" class="input-field" id="notePassword" placeholder="Введіть пароль">
+        <button class="btn" onclick="addNote()">Зберегти нотатку</button>
+      </div>
+
+    </div>
     <div class="note-list" id="noteList"></div>
   </div>
 
