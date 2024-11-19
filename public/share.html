@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Поділитися нотаткою</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #00c6ff, #ff6ec4);
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      color: white;
+    }
+    .container {
+      width: 90%;
+      max-width: 600px;
+      text-align: center;
+    }
+    .input-field {
+      margin: 10px 0;
+      padding: 10px;
+      width: 80%;
+      border: none;
+      border-radius: 5px;
+    }
+    .btn {
+      padding: 10px 20px;
+      margin: 5px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #333;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Перегляд зашифрованої нотатки</h1>
+    <input type="password" id="notePassword" class="input-field" placeholder="Введіть пароль">
+    <button class="btn" onclick="viewSharedNote()">Переглянути</button>
+    <div id="noteContent"></div>
+  </div>
+  <script>
+    function viewSharedNote() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const noteId = urlParams.get('noteId');
+      const password = document.getElementById('notePassword').value;
+
+      if (!noteId || !password) {
+        alert('Будь ласка, введіть пароль.');
+        return;
+      }
+
+      fetch('/notes/view-content', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ noteId, password })
+      })
+      .then(response => response.json())
+      .then(data => {
+        const noteContent = document.getElementById('noteContent');
+        if (data.message) {
+          noteContent.innerText = data.message;
+        } else {
+          noteContent.innerText = `Вміст нотатки: ${data.text}`;
+        }
+      })
+      .catch(error => console.error('Error:', error));
+    }
+  </script>
+</body>
+</html>

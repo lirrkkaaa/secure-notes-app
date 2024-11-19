@@ -120,6 +120,40 @@ app.post('/notes/edit', async (req, res) => {
 
 
 
+// Отримання зашифрованої нотатки за посиланням
+app.get('/notes/share/:noteId', async (req, res) => {
+  const { noteId } = req.params;
+  try {
+    const note = await Note.findById(noteId);
+    if (!note) {
+      return res.status(404).json({ message: 'Нотатку не знайдено.' });
+    }
+    res.json({ encryptedText: note.encryptedText });
+  } catch (error) {
+    console.error('Error fetching shared note:', error);
+    res.status(500).json({ message: 'Помилка при отриманні нотатки.' });
+  }
+});
+
+// Розшифровка нотатки для перегляду за посиланням
+app.post('/notes/share/view', async (req, res) => {
+  const { noteId, password } = req.body;
+  try {
+    const note = await Note.findById(noteId);
+    if (!note) {
+      return res.status(404).json({ message: 'Нотатку не знайдено.' });
+    }
+    const { iv, content } = JSON.parse(note.encryptedText);
+    const decryptedText = decrypt(content, iv, password);
+    res.json({ text: decryptedText });
+  } catch (error) {
+    console.error('Error viewing shared note:', error);
+    res.status(401).json({ message: 'Помилка при розшифровці нотатки.' });
+  }
+});
+
+
+
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

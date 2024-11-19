@@ -52,14 +52,18 @@
 </head>
 <body>
   <div class="container">
-    <h1>Зашифровані нотатки</h1>
+    <h1 align="center">Зашифровані нотатки</h1>
     <div class="note-input">
       <div class="input-row">
         <textarea class="textarea" id="newNoteText" placeholder="Введіть текст нотатки"></textarea>
         <input type="password" class="input-field" id="notePassword" placeholder="Введіть пароль">
         <button class="btn" onclick="addNote()">Зберегти нотатку</button>
       </div>
-
+    </div>
+    <div class="note-list" id="noteList"></div>
+  </div>
+  
+      
     </div>
     <div class="note-list" id="noteList"></div>
   </div>
